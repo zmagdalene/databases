@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-container
--- Generation Time: Feb 26, 2026 at 02:17 PM
+-- Generation Time: Feb 26, 2026 at 03:16 PM
 -- Server version: 8.0.45
 -- PHP Version: 8.3.26
 
@@ -22,6 +22,99 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `moviesdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `moviesdb`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Directors`
+--
+
+CREATE TABLE `Directors` (
+  `director_id` int NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `nationality` varchar(255) DEFAULT NULL,
+  `dob` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Directors`
+--
+
+INSERT INTO `Directors` (`director_id`, `name`, `nationality`, `dob`) VALUES
+(1, 'Christopher Nolan', 'English', '1970-07-30'),
+(2, 'Jaume Collet-Serra', 'Spanish', '1974-03-23'),
+(3, 'Paul Greengrass', 'English', '1955-08-13'),
+(4, 'Sam Taylor-Johnson', 'English', '1967-03-04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Movies`
+--
+
+CREATE TABLE `Movies` (
+  `id` int NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `genre` varchar(255) DEFAULT NULL,
+  `year` year DEFAULT NULL,
+  `box_office` int DEFAULT NULL,
+  `director_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Movies`
+--
+
+INSERT INTO `Movies` (`id`, `title`, `genre`, `year`, `box_office`, `director_id`) VALUES
+(1, 'Oppenheimer', 'film noir', '2023', 954, 1),
+(2, 'Dunkirk', 'action', '2017', 527, 1),
+(3, 'Jungle Cruise', 'adventure', '2021', 221, 2),
+(4, 'Jason Bourne', 'action-thriller', '2016', 415, 3),
+(5, 'The Bourne Ultimatum', 'action-thriller', '2007', 444, 3),
+(6, 'Back to Black', 'biopic', '2024', 51, 4);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Directors`
+--
+ALTER TABLE `Directors`
+  ADD PRIMARY KEY (`director_id`);
+
+--
+-- Indexes for table `Movies`
+--
+ALTER TABLE `Movies`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `director_id` (`director_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Directors`
+--
+ALTER TABLE `Directors`
+  MODIFY `director_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `Movies`
+--
+ALTER TABLE `Movies`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Movies`
+--
+ALTER TABLE `Movies`
+  ADD CONSTRAINT `movies_ibfk_1` FOREIGN KEY (`director_id`) REFERENCES `Directors` (`director_id`);
 --
 -- Database: `movies_zoembikakeu`
 --
