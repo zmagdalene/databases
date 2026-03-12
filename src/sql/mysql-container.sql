@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-container
--- Generation Time: Feb 26, 2026 at 03:16 PM
+-- Generation Time: Mar 12, 2026 at 03:52 PM
 -- Server version: 8.0.45
 -- PHP Version: 8.3.26
 
@@ -17,6 +17,168 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `book_store`
+--
+CREATE DATABASE IF NOT EXISTS `book_store` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `book_store`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Books`
+--
+
+CREATE TABLE `Books` (
+  `book_id` int NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Books`
+--
+
+INSERT INTO `Books` (`book_id`, `title`, `price`) VALUES
+(100, '1984', 15.99),
+(101, 'To Kill a Mockingbird', 10.50),
+(102, 'The Great Gatsby', 11.99),
+(103, 'Learn to Program in One Day!', 14.60);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Customers`
+--
+
+CREATE TABLE `Customers` (
+  `customer_id` int NOT NULL,
+  `name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Customers`
+--
+
+INSERT INTO `Customers` (`customer_id`, `name`) VALUES
+(1, 'Maire'),
+(2, 'Jack'),
+(3, 'James'),
+(4, 'Emily'),
+(5, 'Aoife');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Orders`
+--
+
+CREATE TABLE `Orders` (
+  `order_id` int NOT NULL,
+  `customer_id` int DEFAULT NULL,
+  `order_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Orders`
+--
+
+INSERT INTO `Orders` (`order_id`, `customer_id`, `order_date`) VALUES
+(200, 1, '2024-04-20'),
+(201, 2, '2025-01-05'),
+(202, 4, '2026-01-01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Order_Items`
+--
+
+CREATE TABLE `Order_Items` (
+  `order_id` int NOT NULL,
+  `book_id` int NOT NULL,
+  `quantity` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Order_Items`
+--
+
+INSERT INTO `Order_Items` (`order_id`, `book_id`, `quantity`) VALUES
+(200, 100, 1),
+(200, 101, 2),
+(201, 103, 1),
+(202, 101, 1),
+(202, 103, 3);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Books`
+--
+ALTER TABLE `Books`
+  ADD PRIMARY KEY (`book_id`);
+
+--
+-- Indexes for table `Customers`
+--
+ALTER TABLE `Customers`
+  ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `Orders`
+--
+ALTER TABLE `Orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `customer_id` (`customer_id`);
+
+--
+-- Indexes for table `Order_Items`
+--
+ALTER TABLE `Order_Items`
+  ADD PRIMARY KEY (`order_id`,`book_id`),
+  ADD KEY `book_id` (`book_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Books`
+--
+ALTER TABLE `Books`
+  MODIFY `book_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+
+--
+-- AUTO_INCREMENT for table `Customers`
+--
+ALTER TABLE `Customers`
+  MODIFY `customer_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `Orders`
+--
+ALTER TABLE `Orders`
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Orders`
+--
+ALTER TABLE `Orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`);
+
+--
+-- Constraints for table `Order_Items`
+--
+ALTER TABLE `Order_Items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `Orders` (`order_id`),
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `Books` (`book_id`);
 --
 -- Database: `moviesdb`
 --
