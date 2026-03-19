@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-container
--- Generation Time: Mar 12, 2026 at 03:52 PM
+-- Generation Time: Mar 19, 2026 at 03:29 PM
 -- Server version: 8.0.45
 -- PHP Version: 8.3.26
 
@@ -277,6 +277,182 @@ ALTER TABLE `Movies`
 --
 ALTER TABLE `Movies`
   ADD CONSTRAINT `movies_ibfk_1` FOREIGN KEY (`director_id`) REFERENCES `Directors` (`director_id`);
+--
+-- Database: `movies_mtm`
+--
+CREATE DATABASE IF NOT EXISTS `movies_mtm` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `movies_mtm`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `actors`
+--
+
+CREATE TABLE `actors` (
+  `actor_id` int NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `nationality` varchar(50) DEFAULT NULL,
+  `dob` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `actors`
+--
+
+INSERT INTO `actors` (`actor_id`, `name`, `nationality`, `dob`) VALUES
+(1, 'Cillian Murphy', 'Irish', '1976-05-25'),
+(2, 'Emily Blunt', 'English', '1983-02-23'),
+(3, 'Matt Damon', 'American', '1970-10-08'),
+(4, 'Marisa Abela', 'English', '1996-12-07'),
+(5, 'Harry Styles', 'English', '1994-02-01'),
+(6, 'Jack Whitehall', 'English', '1988-07-07'),
+(7, 'Julia Styles Styles', 'American', '1981-03-28'),
+(8, 'Leslie Manville', 'English', '1956-03-12'),
+(9, 'Jack O\'Connell', 'English', '1990-08-01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `actor_movie`
+--
+
+CREATE TABLE `actor_movie` (
+  `actor_id` int NOT NULL,
+  `movie_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `actor_movie`
+--
+
+INSERT INTO `actor_movie` (`actor_id`, `movie_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(1, 2),
+(5, 2),
+(2, 3),
+(6, 3),
+(3, 4),
+(7, 4),
+(3, 5),
+(7, 5),
+(4, 6),
+(8, 6),
+(9, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `directors`
+--
+
+CREATE TABLE `directors` (
+  `director_id` int NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `nationality` varchar(255) DEFAULT NULL,
+  `dob` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `directors`
+--
+
+INSERT INTO `directors` (`director_id`, `name`, `nationality`, `dob`) VALUES
+(1, 'Christopher Nolan', 'English', '1970-07-30'),
+(2, 'Jaume Collet-Serra', 'Spanish', '1974-03-23'),
+(3, 'Paul Greengrass', 'English', '1955-08-13'),
+(4, 'Sam Taylor-Johnson', 'English', '1967-03-04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `movies`
+--
+
+CREATE TABLE `movies` (
+  `movie_id` int NOT NULL,
+  `title` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `genre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `year` year DEFAULT NULL,
+  `box_office` decimal(10,0) NOT NULL,
+  `director_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `movies`
+--
+
+INSERT INTO `movies` (`movie_id`, `title`, `genre`, `year`, `box_office`, `director_id`) VALUES
+(1, 'Oppenheimer', 'Film Noir', '2023', 954, 1),
+(2, 'Dunkirk', 'Action', '2017', 527, 1),
+(3, 'Jungle Cruise', 'Adventure', '2021', 221, 2),
+(4, 'Jason Bourne', 'action-thriller', '2016', 415, 3),
+(5, 'The Bourne Ultimatum', 'action-thriller', '2007', 444, 3),
+(6, 'Back to Black', 'biopic', '2024', 0, 4);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `actors`
+--
+ALTER TABLE `actors`
+  ADD PRIMARY KEY (`actor_id`);
+
+--
+-- Indexes for table `actor_movie`
+--
+ALTER TABLE `actor_movie`
+  ADD PRIMARY KEY (`actor_id`,`movie_id`),
+  ADD KEY `movie_id` (`movie_id`);
+
+--
+-- Indexes for table `directors`
+--
+ALTER TABLE `directors`
+  ADD PRIMARY KEY (`director_id`);
+
+--
+-- Indexes for table `movies`
+--
+ALTER TABLE `movies`
+  ADD PRIMARY KEY (`movie_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `actors`
+--
+ALTER TABLE `actors`
+  MODIFY `actor_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `directors`
+--
+ALTER TABLE `directors`
+  MODIFY `director_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `movies`
+--
+ALTER TABLE `movies`
+  MODIFY `movie_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `actor_movie`
+--
+ALTER TABLE `actor_movie`
+  ADD CONSTRAINT `actor_movie_ibfk_1` FOREIGN KEY (`actor_id`) REFERENCES `actors` (`actor_id`),
+  ADD CONSTRAINT `actor_movie_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`movie_id`);
 --
 -- Database: `movies_zoembikakeu`
 --
