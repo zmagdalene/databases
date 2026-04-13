@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-container
--- Generation Time: Mar 19, 2026 at 03:29 PM
--- Server version: 8.0.45
+-- Generation Time: Apr 13, 2026 at 08:47 PM
+-- Server version: 8.0.44
 -- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -179,6 +179,313 @@ ALTER TABLE `Orders`
 ALTER TABLE `Order_Items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `Orders` (`order_id`),
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `Books` (`book_id`);
+--
+-- Database: `local_jobs`
+--
+CREATE DATABASE IF NOT EXISTS `local_jobs` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `local_jobs`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `applications`
+--
+
+CREATE TABLE `applications` (
+  `application_id` int NOT NULL,
+  `job_id` int DEFAULT NULL,
+  `worker_id` int DEFAULT NULL,
+  `application_status_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`application_id`, `job_id`, `worker_id`, `application_status_id`) VALUES
+(1, 1, 3, 2),
+(2, 2, 4, 1),
+(3, 3, 3, 2),
+(4, 3, 5, 1),
+(5, 4, 4, 3),
+(6, 4, 3, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `application_status`
+--
+
+CREATE TABLE `application_status` (
+  `status_id` int NOT NULL,
+  `status_name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `application_status`
+--
+
+INSERT INTO `application_status` (`status_id`, `status_name`) VALUES
+(2, 'accepted'),
+(4, 'completed'),
+(1, 'pending'),
+(3, 'rejected');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `job_id` int NOT NULL,
+  `category_id` int DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `pay` decimal(6,2) DEFAULT NULL,
+  `family_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`job_id`, `category_id`, `title`, `description`, `pay`, `family_id`) VALUES
+(1, 1, 'Babysitting Evening', 'Look after 2 kids for 3 hours', 25.00, 1),
+(2, 5, 'Dog Walking', 'Walk medium dog once daily', 15.00, 1),
+(3, 2, 'Maths Tutoring', 'Junior cert maths help', 30.00, 2),
+(4, 3, 'House Cleaning', 'General cleaning of house', 40.00, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_category`
+--
+
+CREATE TABLE `job_category` (
+  `category_id` int NOT NULL,
+  `category_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `job_category`
+--
+
+INSERT INTO `job_category` (`category_id`, `category_name`) VALUES
+(1, 'babysitting'),
+(2, 'tutoring'),
+(3, 'cleaning'),
+(4, 'gardening'),
+(5, 'animal_care'),
+(6, 'errands'),
+(7, 'general_help'),
+(8, 'outdoor_work'),
+(9, 'tech_help');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `review_id` int NOT NULL,
+  `job_id` int DEFAULT NULL,
+  `reviewer_id` int DEFAULT NULL,
+  `reviewee_id` int DEFAULT NULL,
+  `rating` int DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL
+) ;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `job_id`, `reviewer_id`, `reviewee_id`, `rating`, `comment`) VALUES
+(1, 1, 1, 3, 5, 'Very responsible and great with kids'),
+(2, 2, 1, 4, 4, 'Good job walking the dog'),
+(3, 3, 2, 3, 5, 'Excellent tutoring, very helpful'),
+(4, 4, 2, 4, 3, 'Average cleaning job'),
+(5, 2, 2, 5, 5, 'Excellent and very reliable worker'),
+(6, 1, 1, 5, 4, 'Good job, punctual and polite');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` int NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `user_type_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `name`, `email`, `user_type_id`) VALUES
+(1, 'Sarah Murphy', 'sarahMurphy6@gmail.com', 1),
+(2, 'John O’Brian', 'johnOBrian454@gmail.com', 1),
+(3, 'Emma Kelly', 'emmaKelly09@gmail.com', 2),
+(4, 'Liam Byrne', 'liamByrne123@gmail.com', 2),
+(5, 'Aoife Nolan', 'aoifeNolan57@gmail.com', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_type`
+--
+
+CREATE TABLE `user_type` (
+  `user_type_id` int NOT NULL,
+  `user_type` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `user_type`
+--
+
+INSERT INTO `user_type` (`user_type_id`, `user_type`) VALUES
+(1, 'family'),
+(2, 'worker'),
+(3, 'admin');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `applications`
+--
+ALTER TABLE `applications`
+  ADD PRIMARY KEY (`application_id`),
+  ADD KEY `job_id` (`job_id`),
+  ADD KEY `application_status_id` (`application_status_id`);
+
+--
+-- Indexes for table `application_status`
+--
+ALTER TABLE `application_status`
+  ADD PRIMARY KEY (`status_id`),
+  ADD UNIQUE KEY `status_name` (`status_name`);
+
+--
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`job_id`),
+  ADD KEY `category_id` (`category_id`),
+  ADD KEY `family_id` (`family_id`);
+
+--
+-- Indexes for table `job_category`
+--
+ALTER TABLE `job_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`review_id`),
+  ADD KEY `job_id` (`job_id`),
+  ADD KEY `reviewer_id` (`reviewer_id`),
+  ADD KEY `reviewee_id` (`reviewee_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `user_type_id` (`user_type_id`);
+
+--
+-- Indexes for table `user_type`
+--
+ALTER TABLE `user_type`
+  ADD PRIMARY KEY (`user_type_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `applications`
+--
+ALTER TABLE `applications`
+  MODIFY `application_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `application_status`
+--
+ALTER TABLE `application_status`
+  MODIFY `status_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `job_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `job_category`
+--
+ALTER TABLE `job_category`
+  MODIFY `category_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `review_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `user_type`
+--
+ALTER TABLE `user_type`
+  MODIFY `user_type_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `applications`
+--
+ALTER TABLE `applications`
+  ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`),
+  ADD CONSTRAINT `applications_ibfk_2` FOREIGN KEY (`application_status_id`) REFERENCES `application_status` (`status_id`);
+
+--
+-- Constraints for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD CONSTRAINT `jobs_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `job_category` (`category_id`),
+  ADD CONSTRAINT `jobs_ibfk_2` FOREIGN KEY (`family_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`),
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`reviewer_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`reviewee_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_type_id`) REFERENCES `user_type` (`user_type_id`);
 --
 -- Database: `moviesdb`
 --
@@ -373,7 +680,7 @@ INSERT INTO `directors` (`director_id`, `name`, `nationality`, `dob`) VALUES
 
 CREATE TABLE `movies` (
   `movie_id` int NOT NULL,
-  `title` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `genre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `year` year DEFAULT NULL,
   `box_office` decimal(10,0) NOT NULL,
@@ -467,7 +774,7 @@ USE `movies_zoembikakeu`;
 
 CREATE TABLE `actors_table` (
   `actor_id` int NOT NULL,
-  `actor_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `actor_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `movie_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -489,7 +796,7 @@ INSERT INTO `actors_table` (`actor_id`, `actor_name`, `movie_id`) VALUES
 
 CREATE TABLE `directors_table` (
   `director_id` int NOT NULL,
-  `director_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `director_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -508,10 +815,10 @@ INSERT INTO `directors_table` (`director_id`, `director_name`) VALUES
 
 CREATE TABLE `movies_table` (
   `movie_id` int NOT NULL,
-  `title` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `release_year` year DEFAULT NULL,
   `box_office` decimal(10,1) NOT NULL,
-  `genre` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `genre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `director_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -584,10 +891,10 @@ USE `retail_store`;
 
 CREATE TABLE `customers` (
   `customer_id` int NOT NULL,
-  `first_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `last_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `phone` varchar(15) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `phone` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -607,7 +914,7 @@ INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `email`, `pho
 CREATE TABLE `orders` (
   `order_id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
-  `product_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `order_date` date DEFAULT NULL,
   `amount` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
