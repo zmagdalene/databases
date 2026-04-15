@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-container
--- Generation Time: Apr 13, 2026 at 08:47 PM
+-- Generation Time: Apr 15, 2026 at 11:54 AM
 -- Server version: 8.0.44
 -- PHP Version: 8.3.26
 
@@ -295,7 +295,7 @@ CREATE TABLE `reviews` (
   `reviewee_id` int DEFAULT NULL,
   `rating` int DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `reviews`
@@ -441,7 +441,7 @@ ALTER TABLE `job_category`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
